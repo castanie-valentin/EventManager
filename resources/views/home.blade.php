@@ -818,6 +818,8 @@
                     </div>
                 </a></article>
         @endforeach
+
+        <a href="{{route('event.create')}}" type="button" class="btn btn-primary">Create an event</a>
     </div>
 </div>
 </body>

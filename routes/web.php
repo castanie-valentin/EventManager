@@ -22,8 +22,8 @@ Route::get('/', [EventController::class, 'showAll'])->name('home');
 
 Route::get('/events/{event}', [EventController::class,'show'])->name('events');
 
-Route::get('/event/create', [EventController::class, 'create']);
-Route::post('/event', [EventController::class, 'store']);
+Route::get('/event/create', [EventController::class, 'create'])->middleware(['auth', 'verified'])->name('event.create');
+Route::get('/event', [EventController::class, 'store'])->middleware(['auth', 'verified'])->name('event.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -20,7 +20,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('event.create');
+        return view('event-create');
     }
 
     /**
@@ -29,15 +29,16 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:events|max:255',
-            'theme' => 'required|max:255',
-            'user_id'=> 'required',
-            'description' => 'required',
-            'location'=> 'required',
-            'dateOfEvent' => 'required',
+            'name' => 'required|string|max:255',
+            'theme' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string',
+            'dateOfEvent' => 'required|date'
         ]);
 
-        return redirect('events');
+        $request->user()->events()->create($validated);
+
+        return redirect('/');
     }
 
     /**
@@ -51,8 +52,9 @@ class EventController extends Controller
         ]);
     }
 
-    public function showAll () {
-        return view('home',[
+    public function showAll()
+    {
+        return view('home', [
             'events' => Event::all()
         ]);
     }
