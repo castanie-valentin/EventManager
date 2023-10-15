@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\EventCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,10 @@ class Event extends Model
         'description',
         'location',
         'dateOfEvent',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => EventCreated::class,
     ];
 
     public function user(): BelongsTo
