@@ -7,8 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Events Manager</title>
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.css">
+
 
     <style>
         /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
@@ -783,47 +787,60 @@
 <body class="antialiased">
 <x-app-layout>
     <div
-        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-        <div style="flex-direction: column; margin-left: 400px; margin-right: 400px;color:white; ">
-            <article>
-                <h1 style="color: red">Nom de l'événement : {{ $event->name }}</h1>
-                <h2 style="color: blue">Lieu de l'événement : {{ $event->location }}</h2>
-                <h2 style="color: green">Theme : {{ $event->theme }}</h2>
-                <h2 style="color: yellow">Organisateur : {{ $user->name }}</h2>
-                <h2 style="color: purple">Organisateur : {{ $event->description }}</h2>
+        class="relative sm:flex sm:justify-center sm:items-center mt-20 bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+        <div style="margin-right : 300px ; margin-left : 300px ; flex-direction: column;color:white; ">
+            <article class="text-dark card bg-info mb-3" style="min-width: 50vw">
 
-                @if ($event->dateOfEvent != null)
-                    <h2 style="color: pink">Date de l'événement : {{ $event->dateOfEvent }}</h2>
-                @endif
+                <h1 class="card-header">Name of the event : <span
+                        class="text-xl fw-bolder text-white">{{ $event->name }}</span></h1>
+                <div class="card-body">
+                    <h2 class="card-title mb-3">Location : <span
+                            class="text-l fw-bolder text-white"> {{ $event->location }}</span></h2>
+                    <h3 class="card-subtitle">Topic : <span
+                            class="text-l fw-bolder text-white">{{ $event->theme }}</span></h3>
+                </div>
+                <p class="card-body card-text">Description : <span
+                        class="text-l fw-bolder text-white">{{ $event->description }}</span></p>
+
+                <div class="card-body d-flex flex-row justify-content-between">
+                    <p>Organizer : <span class="text-l fw-bolder text-white">{{ $user->name }}</span></p>
+
+                    @if ($event->dateOfEvent != null)
+                        <p>Date of the event : <span
+                                class="text-l fw-bolder text-white">{{ $event->dateOfEvent }}</span></p>
+                    @endif
+                </div>
+
             </article>
-            @if ($event->user->is(auth()->user()))
 
-                <x-dropdown>
+            <div class="d-flex inline-flex justify-content-between">
+                <h2 class="text-white text-xl"><a href="{{ route('home') }}">Back to main page</a></h2>
 
-                    <x-slot name="trigger">
+                @if ($event->user->is(auth()->user()))
 
-                        <button style="color: cyan">
+                    <x-dropdown>
+                        <x-slot name="trigger">
+                            <button class="btn btn-outline-info text-xl">Option</button>
+                        </x-slot>
 
-                          Option
+                        <x-slot name="content">
+                                <x-dropdown-link :href="route('event.edit', $event)" class="text-dark">
+                                    {{ __('Edit') }}
+                                </x-dropdown-link>
 
-                        </button>
+                                <form method="POST" action="{{ route('event.destroy', $event) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <x-dropdown-link :href="route('event.destroy', $event)"
+                                                     onclick="event.preventDefault(); this.closest('form').submit();" class="text-dark">
+                                        {{ __('Delete') }}
+                                    </x-dropdown-link>
+                                </form>
+                        </x-slot>
 
-                    </x-slot>
-
-                    <x-slot name="content">
-
-                        <x-dropdown-link :href="route('event.edit', $event)">
-
-                            {{ __('Edit') }}
-
-                        </x-dropdown-link>
-
-                    </x-slot>
-
-                </x-dropdown>
-
-            @endif
-            <h2 style="font-size: larger"><a href="{{ route('home') }}">Go back</a></h2>
+                    </x-dropdown>
+                @endif
+            </div>
         </div>
     </div>
 </x-app-layout>

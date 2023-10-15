@@ -25,6 +25,8 @@ Route::get('/event/create', [EventController::class, 'create'])->middleware(['au
 Route::post('/event', [EventController::class, 'store'])->middleware(['auth', 'verified'])->name('event.store');
 Route::get('events/{event}/edit',[EventController::class,'edit'])->middleware(['auth', 'verified'])->name('event.edit');
 Route::patch('/events/{event}', [EventController::class,'update'])->middleware(['auth', 'verified'])->name('event.update');
+Route::delete('/events/{event}', [EventController::class,'destroy'])->middleware(['auth', 'verified'])->name('event.destroy');
+
 
 /* Other route */
 Route::get('/dashboard', function () {

@@ -30,7 +30,7 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getDateOfEventAttribute($date)
+    public static function getDateOfEventAttribute($date)
     {
         if ($date)
             return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d M Y');

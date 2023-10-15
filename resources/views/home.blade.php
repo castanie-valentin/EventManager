@@ -1,4 +1,6 @@
-<!doctype html>
+@php use App\Models\Event; @endphp
+
+    <!doctype html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -11,8 +13,6 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.css">
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
@@ -790,24 +790,33 @@
         class="relative sm:flex sm:justify-center mt-10 sm:items-center bg-dots-darker bg-center dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
         <div style="flex-direction: column; margin-left: 400px; margin-right: 400px ">
-            <h1 style="text-align : center ; color:white;font-size: xx-large; font-weight: bolder; margin-bottom: 20px">
-                Future event</h1>
+            <div class="d-flex justify-content-between mb-4">
+                <h1 style="text-align : center ; color:white;font-size: xx-large; font-weight: bolder;">
+                    Future event</h1>
+                <a href="{{route('event.create')}}" type="button" class="btn btn-primary bg-light text-dark">Create an event</a>
+            </div>
+
             @foreach($events as $event)
-                <article class="card text-white bg-primary mb-4" style="margin-bottom: 20px">
-                    <a href="{{ route('events', ['event'=>$event]) }}">
+                <article class="card text-white bg-info mb-4" style="margin-bottom: 20px ; min-width: 50vw">
+
+                    <a href="{{ route('events', ['event'=>$event->id]) }}">
                         <div class="w-100 card-header d-flex justify-content-between">
                             <h2 class="">{{$event->name}}</h2>
-                            <h3 class="badge bg-dark">{{$event->dateOfEvent}}</h3>
+                            <h3 class="badge bg-dark">{{Event::getDateOfEventAttribute($event->dateOfEvent)}}</h3>
                         </div>
                         <div class="card-body">
                             <h3 class="card-title text-xl fw-bolder">{{$event->theme}}</h3>
                             <span class="car-text d-inline-block text-truncate"
                                   style="max-width: 50vw;">{{$event->description}} </span>
                         </div>
-                    </a></article>
+                    </a>
+                </article>
             @endforeach
-
-            <a href="{{route('event.create')}}" type="button" class="btn btn-primary">Create an event</a>
+            <div class="d-flex justify-content-between">
+                <a href="{{$events->previousPageUrl()}}" type="button" class="btn btn-info"><< Previous</a>
+                <p class="text-white">Page : {{$events->currentPage()}}</p>
+                <a href="{{$events->nextPageUrl()}}" type="button" class="btn btn-info">Next >></a>
+            </div>
         </div>
     </div>
 </x-app-layout>

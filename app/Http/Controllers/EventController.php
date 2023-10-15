@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -13,7 +14,9 @@ class EventController extends Controller
     public function index()
     {
         return view('home', [
-            'events' => Event::all()
+            $events = DB::table('events')->orderBy('dateOfEvent')->simplePaginate(3),
+
+            'events'=> $events,
         ]);
     }
 
@@ -81,7 +84,7 @@ class EventController extends Controller
             'dateOfEvent' => 'required|date'
         ]);
 
-        $request->user()->events()->update($validated);
+        $event->update($validated);
 
         return redirect(route('home'));
     }
@@ -89,8 +92,12 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Event $event)
     {
-        //
+        $this->authorize('delete', $event);
+
+        $event->delete();
+
+        return redirect(route('home'));
     }
 }
