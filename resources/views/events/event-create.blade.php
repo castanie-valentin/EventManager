@@ -1,6 +1,6 @@
 <x-app-layout>
 
-        <form class="mt-12 flex flex-col sm:justify-center items-center sm:pt-0 bg-gray-100 dark:bg-gray-900"
+        <form method="POST" class="mt-12 flex flex-col sm:justify-center items-center sm:pt-0 bg-gray-100 dark:bg-gray-900"
                   action="{{route('event.store')}}">
             <h1 style="font-size: xx-large; font-weight: bolder" class="text-white">Make a new event !</h1>
             @csrf

@@ -12,7 +12,9 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        return view('home', [
+            'events' => Event::all()
+        ]);
     }
 
     /**
@@ -20,7 +22,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('event-create');
+        return view('events/event-create');
     }
 
     /**
@@ -52,27 +54,36 @@ class EventController extends Controller
         ]);
     }
 
-    public function showAll()
-    {
-        return view('home', [
-            'events' => Event::all()
-        ]);
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Event $event)
     {
-        //
+        $this->authorize('update', $event);
+
+        return view('events/event-edit', [
+            'event' => $event
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $this->authorize('update',$event);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'theme' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string',
+            'dateOfEvent' => 'required|date'
+        ]);
+
+        $request->user()->events()->update($validated);
+
+        return redirect(route('home'));
     }
 
     /**

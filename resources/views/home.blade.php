@@ -787,7 +787,7 @@
 <body class="antialiased">
 <x-app-layout>
     <div
-        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+        class="relative sm:flex sm:justify-center mt-10 sm:items-center bg-dots-darker bg-center dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
         <div style="flex-direction: column; margin-left: 400px; margin-right: 400px ">
             <h1 style="text-align : center ; color:white;font-size: xx-large; font-weight: bolder; margin-bottom: 20px">

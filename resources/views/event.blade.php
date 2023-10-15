@@ -795,8 +795,34 @@
                 @if ($event->dateOfEvent != null)
                     <h2 style="color: pink">Date de l'événement : {{ $event->dateOfEvent }}</h2>
                 @endif
-
             </article>
+            @if ($event->user->is(auth()->user()))
+
+                <x-dropdown>
+
+                    <x-slot name="trigger">
+
+                        <button style="color: cyan">
+
+                          Option
+
+                        </button>
+
+                    </x-slot>
+
+                    <x-slot name="content">
+
+                        <x-dropdown-link :href="route('event.edit', $event)">
+
+                            {{ __('Edit') }}
+
+                        </x-dropdown-link>
+
+                    </x-slot>
+
+                </x-dropdown>
+
+            @endif
             <h2 style="font-size: larger"><a href="{{ route('home') }}">Go back</a></h2>
         </div>
     </div>
