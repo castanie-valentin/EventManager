@@ -25,6 +25,7 @@ Route::get('/events/{event}', [EventController::class,'show'])->name('events');
 Route::get('/event/create', [EventController::class, 'create'])->middleware(['auth', 'verified'])->name('event.create');
 Route::get('/event', [EventController::class, 'store'])->middleware(['auth', 'verified'])->name('event.store');
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

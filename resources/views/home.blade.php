@@ -9,7 +9,10 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.css">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
@@ -779,48 +782,34 @@
             }
         }
     </style>
-
 </head>
+
 <body class="antialiased">
-<div
-    class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
-    @if (Route::has('login'))
-        <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-            @auth
-                <a href="{{ url('/dashboard') }}"
-                   class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}"
-                   class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
-                    in</a>
+<x-app-layout>
+    <div
+        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}"
-                       class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-                @endif
-            @endauth
+        <div style="flex-direction: column; margin-left: 400px; margin-right: 400px ">
+            <h1 style="text-align : center ; color:white;font-size: xx-large; font-weight: bolder; margin-bottom: 20px">
+                Future event</h1>
+            @foreach($events as $event)
+                <article class="card text-white bg-primary mb-4" style="margin-bottom: 20px">
+                    <a href="{{ route('events', ['event'=>$event]) }}">
+                        <div class="w-100 card-header d-flex justify-content-between">
+                            <h2 class="">{{$event->name}}</h2>
+                            <h3 class="badge bg-dark">{{$event->dateOfEvent}}</h3>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title text-xl fw-bolder">{{$event->theme}}</h3>
+                            <span class="car-text d-inline-block text-truncate"
+                                  style="max-width: 50vw;">{{$event->description}} </span>
+                        </div>
+                    </a></article>
+            @endforeach
+
+            <a href="{{route('event.create')}}" type="button" class="btn btn-primary">Create an event</a>
         </div>
-    @endif
-    <div style="flex-direction: column; margin-left: 400px; margin-right: 400px ">
-        <h1 style="color:white;font-size: xx-large;margin-bottom: 20px"> Ouais la team bienvenue sur notre site de
-            gestion d'évènement</h1>
-
-        @foreach($events as $event)
-            <article class="card text-white bg-primary mb-4" style="margin-bottom: 20px">
-                <a href="{{ route('events', ['event'=>$event]) }}">
-                    <div class="w-100 card-header d-flex justify-content-between">
-                        <h2 class="">{{$event->name}}</h2>
-                        <h3 class="badge bg-dark">{{$event->dateOfEvent}}</h3>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title text-xl fw-bolder">{{$event->theme}}</h3>
-                        <span class="car-text d-inline-block text-truncate" style="max-width: 50vw;">{{$event->description}} </span>
-                    </div>
-                </a></article>
-        @endforeach
-
-        <a href="{{route('event.create')}}" type="button" class="btn btn-primary">Create an event</a>
     </div>
-</div>
+</x-app-layout>
 </body>
 </html>
