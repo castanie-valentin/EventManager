@@ -793,7 +793,8 @@
             <div class="d-flex justify-content-between mb-4">
                 <h1 style="text-align : center ; color:white;font-size: xx-large; font-weight: bolder;">
                     Future event</h1>
-                <a href="{{route('event.create')}}" type="button" class="btn btn-primary bg-light text-dark">Create an event</a>
+                <a href="{{route('event.create')}}" type="button" class="btn btn-primary bg-light text-dark">Create an
+                    event</a>
             </div>
 
             @foreach($events as $event)
@@ -802,7 +803,10 @@
                     <a href="{{ route('events', ['event'=>$event->id]) }}">
                         <div class="w-100 card-header d-flex justify-content-between">
                             <h2 class="">{{$event->name}}</h2>
-                            <h3 class="badge bg-dark">{{Event::getDateOfEventAttribute($event->dateOfEvent)}}</h3>
+                            <div>
+                                <h3 class="badge bg-dark"> {{$event->location}} </h3>
+                                <h3 class="badge bg-dark">{{Event::getDateOfEventAttribute($event->dateOfEvent)}}</h3>
+                            </div>
                         </div>
                         <div class="card-body">
                             <h3 class="card-title text-xl fw-bolder">{{$event->theme}}</h3>
@@ -811,6 +815,7 @@
                         </div>
                     </a>
                 </article>
+
             @endforeach
             <div class="d-flex justify-content-between">
                 <a href="{{$events->previousPageUrl()}}" type="button" class="btn btn-info"><< Previous</a>

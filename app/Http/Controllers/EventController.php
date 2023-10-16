@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,9 +16,11 @@ class EventController extends Controller
     public function index()
     {
         return view('home', [
-            $events = DB::table('events')->orderBy('dateOfEvent')->simplePaginate(3),
+            $today = $today = Carbon::today(),
 
-            'events'=> $events,
+            $events = DB::table('events')->where('dateOfEvent', '>=', $today)->orderBy('dateOfEvent')->simplePaginate(3),
+
+            'events' => $events,
         ]);
     }
 
@@ -34,11 +38,11 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:5|max:255',
             'theme' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string',
-            'dateOfEvent' => 'required|date'
+            'dateOfEvent' => 'required|date|after_or_equal:today'
         ]);
 
         $request->user()->events()->create($validated);
@@ -72,17 +76,13 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(StoreEventRequest $request, Event $event)
     {
-        $this->authorize('update',$event);
+        $this->authorize('update', $event);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'theme' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string',
-            'dateOfEvent' => 'required|date'
-        ]);
+        $validated = $request->validated();
+
+        $validated = $request->safe()->only(['name', 'theme', 'location', 'description', 'dateOfEvent']);
 
         $event->update($validated);
 
